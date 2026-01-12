@@ -90,7 +90,7 @@ export default function Home() {
           <h1 className="text-5xl md:text-6xl font-bold text-black mb-4">
             AI Prompt Generator
           </h1>
-          <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-gray-600 max-w-4xl mx-auto">
             Transform your ideas into optimized prompts for vibe coding tools like Lovable, Bolt, and Replit
           </p>
         </header>

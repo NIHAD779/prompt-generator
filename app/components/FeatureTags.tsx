@@ -70,7 +70,7 @@ export default function FeatureTags({
             >
               <div className="flex items-start gap-3">
                 <div className={`
-                  flex-shrink-0 p-2 rounded
+                  shrink-0 p-2 rounded
                   ${isSelected ? 'bg-white/20' : 'bg-gray-100'}
                 `}>
                   {IconComponent && (
@@ -89,7 +89,7 @@ export default function FeatureTags({
                 
                 {/* Checkmark for selected items */}
                 {isSelected && (
-                  <div className="flex-shrink-0">
+                  <div className="shrink-0">
                     <Check size={16} className="text-white" />
                   </div>
                 )}
