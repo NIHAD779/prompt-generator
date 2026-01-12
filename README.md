@@ -1,36 +1,171 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Prompt Generator
 
-## Getting Started
+Transform your ideas into optimized prompts for AI-powered vibe coding tools like **Lovable**, **Bolt**, and **Replit Agent**.
 
-First, run the development server:
+## 🚀 Features
+
+- **AI-Powered Generation**: Uses OpenAI GPT-4 to create optimized prompts
+- **Smart Guidelines**: Built-in best practices for vibe coding tools
+- **Modern UI**: Beautiful, responsive interface with dark mode support
+- **Copy to Clipboard**: One-click copying of generated prompts
+- **Real-time Validation**: Character count and input validation
+- **Error Handling**: Comprehensive error messages and loading states
+
+## 📋 Prerequisites
+
+- Node.js 18+ installed
+- OpenAI API key ([Get one here](https://platform.openai.com/api-keys))
+
+## 🛠️ Setup
+
+1. **Install dependencies:**
+
+```bash
+npm install
+```
+
+2. **Configure environment variables:**
+
+Create a `.env.local` file in the root directory:
+
+```bash
+OPENAI_API_KEY=your_openai_api_key_here
+```
+
+Replace `your_openai_api_key_here` with your actual OpenAI API key.
+
+3. **Run the development server:**
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. **Open your browser:**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Navigate to [http://localhost:3000](http://localhost:3000)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🎯 How to Use
 
-## Learn More
+1. **Enter Your Instructions**: Describe what you want to build in the input textarea. Be specific about:
+   - Features and functionality
+   - Technology stack (React, TypeScript, etc.)
+   - UI/UX requirements
+   - Design preferences
 
-To learn more about Next.js, take a look at the following resources:
+2. **Generate Prompt**: Click the "Generate Optimized Prompt" button
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. **Copy & Use**: Once generated, copy the optimized prompt and paste it into your preferred vibe coding tool:
+   - [Lovable](https://lovable.dev)
+   - [Bolt](https://bolt.new)
+   - [Replit Agent](https://replit.com)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 💡 Tips for Better Results
 
-## Deploy on Vercel
+### Be Specific
+Include exact features, technologies, and design preferences you want. The more detail, the better the generated prompt.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Example:**
+```
+Create a todo app with React and TypeScript. It should have a clean, 
+modern UI with Tailwind CSS. Users can add, edit, delete, and mark 
+todos as complete. Include filtering by status and local storage persistence.
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Mention Tech Stack
+Specify frameworks, libraries, and tools explicitly:
+- Frontend: React, Vue, Next.js, etc.
+- Styling: Tailwind CSS, styled-components, etc.
+- State: Redux, Zustand, Context API, etc.
+- Backend: Node.js, Express, FastAPI, etc.
+
+### Describe UI/UX
+Mention colors, layout, responsiveness, and user interactions:
+- Color schemes
+- Layout structure (sidebar, grid, etc.)
+- Mobile responsiveness
+- Animations and transitions
+- Accessibility requirements
+
+## 📁 Project Structure
+
+```
+prompt-generator/
+├── app/
+│   ├── api/
+│   │   └── generate-prompt/
+│   │       └── route.ts          # API endpoint for prompt generation
+│   ├── page.tsx                   # Main UI component
+│   ├── layout.tsx                 # Root layout with metadata
+│   └── globals.css                # Global styles
+├── lib/
+│   ├── prompt-guidelines.ts       # Prompt engineering guidelines
+│   └── types.ts                   # TypeScript type definitions
+├── .env.local                     # Environment variables (create this)
+└── package.json                   # Dependencies
+```
+
+## 🔧 API Reference
+
+### POST `/api/generate-prompt`
+
+Generates an optimized prompt based on user instructions.
+
+**Request Body:**
+```json
+{
+  "userInstructions": "Your project description here"
+}
+```
+
+**Success Response (200):**
+```json
+{
+  "success": true,
+  "generatedPrompt": "Optimized prompt text..."
+}
+```
+
+**Error Response (400/500):**
+```json
+{
+  "error": "Error message",
+  "details": "Optional error details"
+}
+```
+
+## 🎨 Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **AI Provider**: OpenAI GPT-4
+- **Deployment**: Vercel (recommended)
+
+## 🚢 Deployment
+
+### Deploy to Vercel
+
+1. Push your code to GitHub
+2. Import your repository on [Vercel](https://vercel.com)
+3. Add your `OPENAI_API_KEY` in the Environment Variables section
+4. Deploy!
+
+### Other Platforms
+
+Make sure to set the `OPENAI_API_KEY` environment variable on your hosting platform.
+
+## 📝 License
+
+MIT License - feel free to use this project for personal or commercial purposes.
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to open issues or submit pull requests.
+
+## 📞 Support
+
+If you encounter any issues or have questions, please open an issue on GitHub.
+
+---
+
+Built with ❤️ using Next.js and OpenAI
