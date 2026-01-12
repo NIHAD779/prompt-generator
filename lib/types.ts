@@ -1,5 +1,5 @@
 /**
- * TypeScript types and interfaces for the Prompt Generator application
+ * TypeScript types and interfaces for the HealMyPrompt application
  */
 
 export interface Feature {

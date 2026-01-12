@@ -1,4 +1,4 @@
-# AI Prompt Generator
+# HealMyPrompt
 
 Transform your ideas into optimized prompts for AI-powered vibe coding tools like **Lovable**, **Bolt**, and **Replit Agent**.
 
@@ -89,7 +89,7 @@ Mention colors, layout, responsiveness, and user interactions:
 ## 📁 Project Structure
 
 ```
-prompt-generator/
+healmyprompt/
 ├── app/
 │   ├── api/
 │   │   └── generate-prompt/

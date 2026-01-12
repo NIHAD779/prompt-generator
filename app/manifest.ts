@@ -2,8 +2,8 @@ import { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'AI Prompt Generator',
-    short_name: 'PromptGen',
+    name: 'HealMyPrompt',
+    short_name: 'HealMyPrompt',
     description: 'Transform your ideas into optimized prompts for AI-powered development tools like Lovable, Bolt, and Replit.',
     start_url: '/',
     display: 'standalone',

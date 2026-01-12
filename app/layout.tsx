@@ -13,13 +13,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://prompt-generator.app'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://healmyprompt.com'),
   title: {
-    default: "AI Prompt Generator - Optimize Prompts for Vibe Coding Tools",
-    template: "%s | AI Prompt Generator"
+    default: "HealMyPrompt - Optimize Prompts for Vibe Coding Tools",
+    template: "%s | HealMyPrompt"
   },
   description: "Transform your ideas into optimized prompts for AI-powered development tools like Lovable, Bolt, and Replit. Generate perfect prompts with AI assistance.",
   keywords: [
+    "HealMyPrompt",
     "AI prompt generator",
     "vibe coding",
     "Lovable",
@@ -33,9 +34,9 @@ export const metadata: Metadata = {
     "GPT-4",
     "AI prompts"
   ],
-  authors: [{ name: "AI Prompt Generator Team" }],
-  creator: "AI Prompt Generator",
-  publisher: "AI Prompt Generator",
+  authors: [{ name: "HealMyPrompt Team" }],
+  creator: "HealMyPrompt",
+  publisher: "HealMyPrompt",
   robots: {
     index: true,
     follow: true,
@@ -51,25 +52,25 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "/",
-    siteName: "AI Prompt Generator",
-    title: "AI Prompt Generator - Optimize Prompts for Vibe Coding Tools",
+    siteName: "HealMyPrompt",
+    title: "HealMyPrompt - Optimize Prompts for Vibe Coding Tools",
     description: "Transform your ideas into optimized prompts for AI-powered development tools like Lovable, Bolt, and Replit. Generate perfect prompts with AI assistance.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "AI Prompt Generator - Optimize Your AI Development Prompts",
+        alt: "HealMyPrompt - Optimize Your AI Development Prompts",
         type: "image/png",
       }
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "AI Prompt Generator - Optimize Prompts for Vibe Coding Tools",
+    title: "HealMyPrompt - Optimize Prompts for Vibe Coding Tools",
     description: "Transform your ideas into optimized prompts for AI-powered development tools like Lovable, Bolt, and Replit.",
     images: ["/twitter-image.png"],
-    creator: "@promptgenerator",
+    creator: "@healmyprompt",
   },
   alternates: {
     canonical: "/",
@@ -93,9 +94,9 @@ export default function RootLayout({
     '@graph': [
       {
         '@type': 'WebApplication',
-        '@id': `${process.env.NEXT_PUBLIC_SITE_URL || 'https://prompt-generator.app'}/#webapp`,
-        name: 'AI Prompt Generator',
-        url: process.env.NEXT_PUBLIC_SITE_URL || 'https://prompt-generator.app',
+        '@id': `${process.env.NEXT_PUBLIC_SITE_URL || 'https://healmyprompt.com'}/#webapp`,
+        name: 'HealMyPrompt',
+        url: process.env.NEXT_PUBLIC_SITE_URL || 'https://healmyprompt.com',
         description: 'Transform your ideas into optimized prompts for AI-powered development tools like Lovable, Bolt, and Replit.',
         applicationCategory: 'DeveloperApplication',
         operatingSystem: 'Any',
@@ -114,23 +115,23 @@ export default function RootLayout({
       },
       {
         '@type': 'Organization',
-        '@id': `${process.env.NEXT_PUBLIC_SITE_URL || 'https://prompt-generator.app'}/#organization`,
-        name: 'AI Prompt Generator',
-        url: process.env.NEXT_PUBLIC_SITE_URL || 'https://prompt-generator.app',
+        '@id': `${process.env.NEXT_PUBLIC_SITE_URL || 'https://healmyprompt.com'}/#organization`,
+        name: 'HealMyPrompt',
+        url: process.env.NEXT_PUBLIC_SITE_URL || 'https://healmyprompt.com',
         logo: {
           '@type': 'ImageObject',
-          url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://prompt-generator.app'}/logo.png`,
+          url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://healmyprompt.com'}/logo.png`,
         },
       },
       {
         '@type': 'BreadcrumbList',
-        '@id': `${process.env.NEXT_PUBLIC_SITE_URL || 'https://prompt-generator.app'}/#breadcrumb`,
+        '@id': `${process.env.NEXT_PUBLIC_SITE_URL || 'https://healmyprompt.com'}/#breadcrumb`,
         itemListElement: [
           {
             '@type': 'ListItem',
             position: 1,
             name: 'Home',
-            item: process.env.NEXT_PUBLIC_SITE_URL || 'https://prompt-generator.app',
+            item: process.env.NEXT_PUBLIC_SITE_URL || 'https://healmyprompt.com',
           },
         ],
       },
@@ -142,7 +143,7 @@ export default function RootLayout({
       <head>
         <meta name="theme-color" content="#000000" />
         <meta name="color-scheme" content="light" />
-        <link rel="canonical" href={process.env.NEXT_PUBLIC_SITE_URL || 'https://prompt-generator.app'} />
+        <link rel="canonical" href={process.env.NEXT_PUBLIC_SITE_URL || 'https://healmyprompt.com'} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

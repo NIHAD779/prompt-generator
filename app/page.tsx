@@ -88,7 +88,7 @@ export default function Home() {
         {/* Header */}
         <header className="text-center mb-12">
           <h1 className="text-5xl md:text-6xl font-bold text-black mb-4">
-            AI Prompt Generator
+            HealMyPrompt
           </h1>
           <p className="text-base md:text-lg text-gray-600 max-w-4xl mx-auto">
             Transform your ideas into optimized prompts for vibe coding tools like Lovable, Bolt, and Replit

@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://prompt-generator.app';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://healmyprompt.com';
   
   return {
     rules: [
