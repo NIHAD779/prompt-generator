@@ -62,76 +62,91 @@ export default function Home() {
   const charCount = userInstructions.length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Animated Background */}
+      <div className="fixed inset-0 bg-linear-to-br from-white via-purple-50 to-pink-50 animate-gradient"></div>
+      
+      {/* Floating Orbs */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-200/30 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-200/30 rounded-full blur-3xl animate-float-delayed"></div>
+        <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-lavender-200/30 rounded-full blur-3xl animate-float" style={{animationDelay: '2s'}}></div>
+      </div>
+
+      <div className="container mx-auto px-4 py-8 max-w-4xl relative z-10">
         {/* Header */}
-        <header className="text-center mb-12">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
+        <header className="text-center mb-12 animate-fade-in">
+          <h1 className="text-5xl md:text-6xl font-bold bg-linear-to-r from-purple-600 via-pink-500 to-purple-600 bg-clip-text text-transparent mb-4">
             AI Prompt Generator
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-purple-900/70 max-w-2xl mx-auto">
             Transform your ideas into optimized prompts for vibe coding tools like Lovable, Bolt, and Replit
           </p>
         </header>
 
-        {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Input Section */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 border border-gray-100 dark:border-gray-700">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">
-                Your Instructions
-              </h2>
-              <div className="text-sm text-gray-500 dark:text-gray-400">
-                {wordCount} words · {charCount}/5000
+        {/* Main Content - Single Column */}
+        <div className="max-w-3xl mx-auto">
+          {/* State 1: Input Form (show when no prompt and not loading) */}
+          {!isLoading && !generatedPrompt && (
+            <div className="glass-light rounded-3xl shadow-2xl p-8 glow-purple-light transition-smooth shine-effect animate-fade-in">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-semibold bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                  Your Instructions
+                </h2>
+                <div className="text-sm text-purple-700/70 px-3 py-1 rounded-full glass">
+                  {wordCount} words · {charCount}/5000
+                </div>
               </div>
-            </div>
 
-            <textarea
-              value={userInstructions}
-              onChange={(e) => setUserInstructions(e.target.value)}
-              placeholder="Describe what you want to build... Be as specific as possible!
+              <textarea
+                value={userInstructions}
+                onChange={(e) => setUserInstructions(e.target.value)}
+                placeholder="Describe what you want to build... Be as specific as possible!
 
 Example: 'Create a todo app with React and TypeScript. It should have a clean, modern UI with Tailwind CSS. Users can add, edit, delete, and mark todos as complete. Include filtering by status and local storage persistence.'"
-              className="w-full h-96 p-4 border border-gray-300 dark:border-gray-600 rounded-xl resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
-              maxLength={5000}
-            />
+                className="w-full h-96 p-5 rounded-2xl resize-none bg-white/50 border-2 border-purple-300/40 text-purple-900 placeholder-purple-400/60 focus:outline-none focus:border-purple-500/60 focus:ring-2 focus:ring-purple-300/50 transition-smooth"
+                maxLength={5000}
+              />
 
-            <button
-              onClick={handleGenerate}
-              disabled={isLoading || !userInstructions.trim()}
-              className="w-full mt-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-4 px-6 rounded-xl hover:from-blue-700 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-            >
-              {isLoading ? (
-                <span className="flex items-center justify-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Generating Prompt...
+              <button
+                onClick={handleGenerate}
+                disabled={isLoading || !userInstructions.trim()}
+                className="w-full mt-6 bg-linear-to-r from-purple-500 via-pink-500 to-purple-600 text-white font-semibold py-4 px-6 rounded-2xl disabled:opacity-40 disabled:cursor-not-allowed transition-smooth hover:scale-[1.02] hover:shadow-[0_20px_50px_rgba(192,132,252,0.4)] active:scale-[0.98] shine-effect"
+              >
+                <span className="flex items-center justify-center gap-2">
+                  ✨ Generate Optimized Prompt
                 </span>
-              ) : (
-                '✨ Generate Optimized Prompt'
+              </button>
+
+              {error && (
+                <div className="mt-4 p-4 glass-light border-2 border-red-400/40 rounded-2xl text-red-700 animate-scale-in">
+                  {error}
+                </div>
               )}
-            </button>
+            </div>
+          )}
 
-            {error && (
-              <div className="mt-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-red-700 dark:text-red-400">
-                {error}
+          {/* State 2: Loading (show when loading) */}
+          {isLoading && (
+            <div className="glass-light rounded-3xl shadow-2xl p-8 glow-purple-light min-h-[600px] flex items-center justify-center animate-fade-in">
+              <div className="text-center">
+                <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-purple-500 border-t-transparent mb-6" style={{boxShadow: '0 0 30px rgba(192, 132, 252, 0.3)'}}></div>
+                <p className="text-xl text-purple-700 font-medium">Crafting your perfect prompt...</p>
+                <p className="text-sm text-purple-600/60 mt-2">This may take a few moments</p>
               </div>
-            )}
-          </div>
+            </div>
+          )}
 
-          {/* Output Section */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 border border-gray-100 dark:border-gray-700">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">
-                Generated Prompt
-              </h2>
-              {generatedPrompt && (
+          {/* State 3: Result (show when prompt is generated) */}
+          {!isLoading && generatedPrompt && (
+            <div className="glass-light rounded-3xl shadow-2xl p-8 glow-purple-light transition-smooth shine-effect animate-fade-in">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-semibold bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                  Generated Prompt
+                </h2>
                 <button
                   onClick={handleCopyToClipboard}
-                  className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors duration-200 text-sm font-medium"
+                  className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-xl transition-smooth text-sm font-medium hover:scale-105 active:scale-95 shadow-lg hover:shadow-[0_10px_30px_rgba(74,222,128,0.3)]"
                 >
                   {copySuccess ? (
                     <>
@@ -149,60 +164,49 @@ Example: 'Create a todo app with React and TypeScript. It should have a clean, m
                     </>
                   )}
                 </button>
-              )}
-            </div>
-
-            {!generatedPrompt && !isLoading && (
-              <div className="h-96 flex items-center justify-center text-gray-400 dark:text-gray-500 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl">
-                <div className="text-center">
-                  <svg className="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                  <p className="text-lg">Your generated prompt will appear here</p>
-                </div>
               </div>
-            )}
 
-            {isLoading && (
-              <div className="h-96 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent mb-4"></div>
-                  <p className="text-gray-600 dark:text-gray-400">Crafting your perfect prompt...</p>
-                </div>
-              </div>
-            )}
-
-            {generatedPrompt && (
-              <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-4 h-96 overflow-y-auto border border-gray-200 dark:border-gray-700">
-                <pre className="whitespace-pre-wrap text-sm text-gray-800 dark:text-gray-200 font-mono leading-relaxed">
+              <div className="bg-white/50 rounded-2xl p-5 min-h-[400px] max-h-[500px] overflow-y-auto border-2 border-purple-300/40">
+                <pre className="whitespace-pre-wrap text-sm text-purple-900 font-mono leading-relaxed">
                   {generatedPrompt}
                 </pre>
               </div>
-            )}
-          </div>
+
+              <button
+                onClick={() => {
+                  setGeneratedPrompt('');
+                  setUserInstructions('');
+                  setError('');
+                }}
+                className="w-full mt-6 bg-linear-to-r from-purple-500 via-pink-500 to-purple-600 text-white font-semibold py-4 px-6 rounded-2xl transition-smooth hover:scale-[1.02] hover:shadow-[0_20px_50px_rgba(192,132,252,0.4)] active:scale-[0.98]"
+              >
+                ✨ Generate New Prompt
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Info Section */}
-        <div className="mt-12 bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 border border-gray-100 dark:border-gray-700">
-          <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">
+        <div className="mt-12 max-w-3xl mx-auto glass-light rounded-3xl shadow-2xl p-8 glow-purple-light shine-effect animate-slide-up" style={{animationDelay: '0.4s'}}>
+          <h3 className="text-xl font-semibold bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-6">
             💡 Tips for Better Results
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-              <h4 className="font-semibold text-blue-900 dark:text-blue-300 mb-2">Be Specific</h4>
-              <p className="text-sm text-gray-700 dark:text-gray-300">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-6 glass rounded-2xl transition-smooth hover:scale-105 glow-hover-light animate-fade-in" style={{animationDelay: '0.5s'}}>
+              <h4 className="font-semibold text-purple-700 mb-2">Be Specific</h4>
+              <p className="text-sm text-purple-600/80">
                 Include exact features, technologies, and design preferences you want
               </p>
             </div>
-            <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-              <h4 className="font-semibold text-purple-900 dark:text-purple-300 mb-2">Mention Tech Stack</h4>
-              <p className="text-sm text-gray-700 dark:text-gray-300">
+            <div className="p-6 glass rounded-2xl transition-smooth hover:scale-105 glow-hover-light animate-fade-in" style={{animationDelay: '0.6s'}}>
+              <h4 className="font-semibold text-pink-700 mb-2">Mention Tech Stack</h4>
+              <p className="text-sm text-purple-600/80">
                 Specify frameworks, libraries, and tools (React, TypeScript, Tailwind, etc.)
               </p>
             </div>
-            <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-              <h4 className="font-semibold text-green-900 dark:text-green-300 mb-2">Describe UI/UX</h4>
-              <p className="text-sm text-gray-700 dark:text-gray-300">
+            <div className="p-6 glass rounded-2xl transition-smooth hover:scale-105 glow-hover-light animate-fade-in" style={{animationDelay: '0.7s'}}>
+              <h4 className="font-semibold text-purple-700 mb-2">Describe UI/UX</h4>
+              <p className="text-sm text-purple-600/80">
                 Mention colors, layout, responsiveness, and user interactions
               </p>
             </div>

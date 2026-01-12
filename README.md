@@ -4,7 +4,7 @@ Transform your ideas into optimized prompts for AI-powered vibe coding tools lik
 
 ## 🚀 Features
 
-- **AI-Powered Generation**: Uses OpenAI GPT-4 to create optimized prompts
+- **AI-Powered Generation**: Uses OpenAI GPT-4.1 to create optimized prompts
 - **Smart Guidelines**: Built-in best practices for vibe coding tools
 - **Modern UI**: Beautiful, responsive interface with dark mode support
 - **Copy to Clipboard**: One-click copying of generated prompts
@@ -138,7 +138,7 @@ Generates an optimized prompt based on user instructions.
 - **Framework**: Next.js 16 (App Router)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
-- **AI Provider**: OpenAI GPT-4
+- **AI Provider**: OpenAI GPT-4.1
 - **Deployment**: Vercel (recommended)
 
 ## 🚢 Deployment

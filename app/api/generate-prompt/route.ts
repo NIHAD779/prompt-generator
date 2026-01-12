@@ -3,11 +3,6 @@ import OpenAI from 'openai';
 import { getPromptGuidelines } from '@/lib/prompt-guidelines';
 import type { GeneratePromptRequest, GeneratePromptResponse, ApiError } from '@/lib/types';
 
-// Initialize OpenAI client
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
 export async function POST(request: NextRequest) {
   try {
     // Parse request body
@@ -38,6 +33,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(errorResponse, { status: 500 });
     }
 
+    // Initialize OpenAI client (after checking API key exists)
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+
     // Get prompt guidelines
     const guidelines = getPromptGuidelines();
 
@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
 
     // Call OpenAI API
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4-turbo-preview', // Using GPT-4 Turbo which is the latest stable version
+      model: 'gpt-4.1',
       messages: [
         {
           role: 'system',
