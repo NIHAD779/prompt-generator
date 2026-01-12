@@ -96,15 +96,15 @@ export default function Home() {
         </header>
 
         {/* Main Content - Single Column */}
-        <div className="max-w-3xl mx-auto">
+        <main className="max-w-3xl mx-auto" role="main">
           {/* State 1: Input Form (show when no prompt and not loading) */}
           {!isLoading && !generatedPrompt && (
-            <div className="border-2 border-black rounded-lg p-8">
+            <article className="border-2 border-black rounded-lg p-8" aria-labelledby="input-heading">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-semibold text-black">
+                <h2 id="input-heading" className="text-2xl font-semibold text-black">
                   Your Instructions
                 </h2>
-                <div className="text-sm text-gray-600 px-3 py-1 border border-gray-300 rounded">
+                <div className="text-sm text-gray-600 px-3 py-1 border border-gray-300 rounded" aria-live="polite" aria-atomic="true">
                   {wordCount} words · {charCount}/5000
                 </div>
               </div>
@@ -120,6 +120,8 @@ Tips for better results:
 • Describe UI/UX - mention colors, layout, responsiveness, and interactions"
                 className="w-full h-48 p-4 rounded border-2 border-gray-300 resize-none bg-white text-black placeholder-gray-400 focus:outline-none focus:border-black"
                 maxLength={5000}
+                aria-label="Enter your project instructions"
+                aria-describedby="input-tips"
               />
 
               <FeatureTags
@@ -131,42 +133,44 @@ Tips for better results:
                 onClick={handleGenerate}
                 disabled={isLoading || !userInstructions.trim()}
                 className="w-full mt-6 bg-black text-white font-semibold py-4 px-6 rounded disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-800"
+                aria-label="Generate optimized prompt from your instructions"
               >
                 Generate Optimized Prompt
               </button>
 
               {error && (
-                <div className="mt-4 p-4 border-2 border-red-500 rounded text-red-700">
+                <div className="mt-4 p-4 border-2 border-red-500 rounded text-red-700" role="alert" aria-live="assertive">
                   {error}
                 </div>
               )}
-            </div>
+            </article>
           )}
 
           {/* State 2: Loading (show when loading) */}
           {isLoading && (
-            <div className="border-2 border-black rounded-lg p-8 min-h-[600px] flex items-center justify-center">
+            <section className="border-2 border-black rounded-lg p-8 min-h-[600px] flex items-center justify-center" role="status" aria-live="polite">
               <div className="text-center">
-                <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-black border-t-transparent mb-6"></div>
+                <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-black border-t-transparent mb-6" aria-hidden="true"></div>
                 <p className="text-xl text-black font-medium">Crafting your perfect prompt...</p>
                 <p className="text-sm text-gray-600 mt-2">This may take a few moments</p>
               </div>
-            </div>
+            </section>
           )}
 
           {/* State 3: Result (show when prompt is generated) */}
           {!isLoading && generatedPrompt && (
-            <div className="border-2 border-black rounded-lg p-8">
+            <article className="border-2 border-black rounded-lg p-8" aria-labelledby="result-heading">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-semibold text-black">
+                <h2 id="result-heading" className="text-2xl font-semibold text-black">
                   Generated Prompt
                 </h2>
                 <div className="flex gap-2">
                   <button
                     onClick={handleReset}
                     className="flex items-center gap-2 px-4 py-2 bg-white hover:bg-gray-100 text-black border-2 border-black rounded text-sm font-medium"
+                    aria-label="Reset form and start over"
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
                     Reset
@@ -174,17 +178,18 @@ Tips for better results:
                   <button
                     onClick={handleCopyToClipboard}
                     className="flex items-center gap-2 px-4 py-2 bg-black hover:bg-gray-800 text-white rounded text-sm font-medium"
+                    aria-label={copySuccess ? "Prompt copied to clipboard" : "Copy prompt to clipboard"}
                   >
                     {copySuccess ? (
                       <>
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                         Copied!
                       </>
                     ) : (
                       <>
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                         </svg>
                         Copy
@@ -194,7 +199,7 @@ Tips for better results:
                 </div>
               </div>
 
-              <div className="bg-white rounded border-2 border-gray-300 p-5 min-h-[400px] max-h-[500px] overflow-y-auto prose prose-sm max-w-none">
+              <div className="bg-white rounded border-2 border-gray-300 p-5 min-h-[400px] max-h-[500px] overflow-y-auto prose prose-sm max-w-none" role="region" aria-label="Generated prompt content">
                 <ReactMarkdown>{generatedPrompt}</ReactMarkdown>
               </div>
 
@@ -206,12 +211,13 @@ Tips for better results:
                   setSelectedFeatures([]);
                 }}
                 className="w-full mt-6 bg-black text-white font-semibold py-4 px-6 rounded hover:bg-gray-800"
+                aria-label="Clear results and generate a new prompt"
               >
                 Generate New Prompt
               </button>
-            </div>
+            </article>
           )}
-        </div>
+        </main>
       </div>
     </div>
   );
