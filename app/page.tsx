@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import type { GeneratePromptResponse } from '@/lib/types';
+import FeatureTags from './components/FeatureTags';
 
 export default function Home() {
   const [userInstructions, setUserInstructions] = useState('');
@@ -9,6 +10,15 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [copySuccess, setCopySuccess] = useState(false);
+  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
+
+  const handleToggleFeature = (featureId: string) => {
+    setSelectedFeatures(prev => 
+      prev.includes(featureId)
+        ? prev.filter(id => id !== featureId)
+        : [...prev, featureId]
+    );
+  };
 
   const handleGenerate = async () => {
     if (!userInstructions.trim()) {
@@ -27,7 +37,10 @@ export default function Home() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ userInstructions }),
+        body: JSON.stringify({ 
+          userInstructions,
+          selectedFeatures,
+        }),
       });
 
       const data: GeneratePromptResponse = await response.json();
@@ -108,6 +121,11 @@ Example: 'Create a todo app with React and TypeScript. It should have a clean, m
                 maxLength={5000}
               />
 
+              <FeatureTags
+                selectedFeatures={selectedFeatures}
+                onToggleFeature={handleToggleFeature}
+              />
+
               <button
                 onClick={handleGenerate}
                 disabled={isLoading || !userInstructions.trim()}
@@ -177,6 +195,7 @@ Example: 'Create a todo app with React and TypeScript. It should have a clean, m
                   setGeneratedPrompt('');
                   setUserInstructions('');
                   setError('');
+                  setSelectedFeatures([]);
                 }}
                 className="w-full mt-6 bg-linear-to-r from-purple-500 via-pink-500 to-purple-600 text-white font-semibold py-4 px-6 rounded-2xl transition-smooth hover:scale-[1.02] hover:shadow-[0_20px_50px_rgba(192,132,252,0.4)] active:scale-[0.98]"
               >

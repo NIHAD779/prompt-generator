@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { getPromptGuidelines } from '@/lib/prompt-guidelines';
+import { getPromptTextForFeatures } from '@/lib/features';
 import type { GeneratePromptRequest, GeneratePromptResponse, ApiError } from '@/lib/types';
 
 export async function POST(request: NextRequest) {
   try {
     // Parse request body
     const body: GeneratePromptRequest = await request.json();
-    const { userInstructions } = body;
+    const { userInstructions, selectedFeatures = [] } = body;
 
     // Validate input
     if (!userInstructions || userInstructions.trim().length === 0) {
@@ -41,9 +42,17 @@ export async function POST(request: NextRequest) {
     // Get prompt guidelines
     const guidelines = getPromptGuidelines();
 
+    // Build user prompt with selected features
+    let userPrompt = userInstructions;
+    
+    // If features are selected, prepend them to the user instructions
+    if (selectedFeatures.length > 0) {
+      const featurePromptText = getPromptTextForFeatures(selectedFeatures);
+      userPrompt = `Required Features to Include:\n\n${featurePromptText}\n\n---\n\nUser Instructions:\n\n${userInstructions}`;
+    }
+
     // Combine guidelines with user instructions
     const systemPrompt = guidelines;
-    const userPrompt = userInstructions;
 
     // Call OpenAI API
     const completion = await openai.chat.completions.create({
