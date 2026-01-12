@@ -39,12 +39,12 @@ export default function FeatureTags({
   onToggleFeature,
 }: FeatureTagsProps) {
   return (
-    <div className="mt-6 animate-fade-in">
+    <div className="mt-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+        <h3 className="text-lg font-semibold text-black">
           Quick Features
         </h3>
-        <span className="text-xs text-purple-600/70">
+        <span className="text-xs text-gray-600">
           {selectedFeatures.length} selected
         </span>
       </div>
@@ -59,25 +59,24 @@ export default function FeatureTags({
               key={feature.id}
               onClick={() => onToggleFeature(feature.id)}
               className={`
-                relative group p-4 rounded-xl transition-all duration-300 text-left
+                p-4 rounded border-2 text-left
                 ${
                   isSelected
-                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/30'
-                    : 'glass border-2 border-purple-300/40 text-purple-900 hover:border-purple-400/60'
+                    ? 'bg-black text-white border-black'
+                    : 'bg-white text-black border-gray-300 hover:border-black'
                 }
-                hover:scale-105 active:scale-95
               `}
               title={feature.description}
             >
               <div className="flex items-start gap-3">
                 <div className={`
-                  flex-shrink-0 p-2 rounded-lg transition-colors
-                  ${isSelected ? 'bg-white/20' : 'bg-purple-100/50'}
+                  flex-shrink-0 p-2 rounded
+                  ${isSelected ? 'bg-white/20' : 'bg-gray-100'}
                 `}>
                   {IconComponent && (
                     <IconComponent 
                       size={20} 
-                      className={isSelected ? 'text-white' : 'text-purple-600'}
+                      className={isSelected ? 'text-white' : 'text-black'}
                     />
                   )}
                 </div>
@@ -86,12 +85,6 @@ export default function FeatureTags({
                   <div className="font-medium text-sm leading-tight">
                     {feature.name}
                   </div>
-                  {/* Show description on hover for unselected items */}
-                  {!isSelected && (
-                    <div className="text-xs text-purple-600/70 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      {feature.description}
-                    </div>
-                  )}
                 </div>
                 
                 {/* Checkmark for selected items */}
@@ -107,10 +100,9 @@ export default function FeatureTags({
       </div>
       
       {/* Helper text */}
-      <p className="text-xs text-purple-600/60 mt-3 text-center">
+      <p className="text-xs text-gray-500 mt-3 text-center">
         Select features to automatically add them to your prompt
       </p>
     </div>
   );
 }
-
