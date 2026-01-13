@@ -4,23 +4,24 @@ import { getPromptGuidelines } from '@/lib/prompt-guidelines';
 import { getPromptTextForFeatures } from '@/lib/features';
 import type { GeneratePromptRequest, GeneratePromptResponse, ApiError } from '@/lib/types';
 import { checkRateLimit, getClientIp, getTimeUntilReset } from '@/lib/rate-limiter';
-import { consumeCsrfToken, validateOrigin } from '@/lib/csrf';
+import { consumeCsrfToken } from '@/lib/csrf';
 
 export async function POST(request: NextRequest) {
   try {
     // 1. Validate Origin/Referer (CSRF Protection)
-    const allowedOrigins = [
-      process.env.NEXT_PUBLIC_APP_URL || 'https://www.healmyprompt.com/',
-      'http://localhost:3000', // Always allow localhost for development
-    ];
+    // TODO: Uncomment when properly configured
+    // const allowedOrigins = [
+    //   process.env.NEXT_PUBLIC_APP_URL || 'https://www.healmyprompt.com/',
+    //   'http://localhost:3000', // Always allow localhost for development
+    // ];
 
-    if (!validateOrigin(request, allowedOrigins)) {
-      const errorResponse: ApiError = {
-        error: 'Invalid request origin',
-        details: 'This API endpoint can only be accessed from the application',
-      };
-      return NextResponse.json(errorResponse, { status: 403 });
-    }
+    // if (!validateOrigin(request, allowedOrigins)) {
+    //   const errorResponse: ApiError = {
+    //     error: 'Invalid request origin',
+    //     details: 'This API endpoint can only be accessed from the application',
+    //   };
+    //   return NextResponse.json(errorResponse, { status: 403 });
+    // }
 
     // 2. Validate CSRF Token
     const csrfToken = request.headers.get('x-csrf-token');
