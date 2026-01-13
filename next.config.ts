@@ -49,11 +49,11 @@ const nextConfig: NextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms",
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https:",
               "font-src 'self' data:",
-              "connect-src 'self' https://api.openai.com",
+              "connect-src 'self' https://api.openai.com https://www.google-analytics.com https://analytics.google.com https://www.clarity.ms https://*.clarity.ms",
               "frame-ancestors 'none'",
               "base-uri 'self'",
               "form-action 'self'",
