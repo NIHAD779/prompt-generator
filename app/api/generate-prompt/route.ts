@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
   try {
     // 1. Validate Origin/Referer (CSRF Protection)
     const allowedOrigins = [
-      process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+      process.env.NEXT_PUBLIC_APP_URL || 'https://www.healmyprompt.com/',
       'http://localhost:3000', // Always allow localhost for development
     ];
 
