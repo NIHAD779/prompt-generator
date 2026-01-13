@@ -39,17 +39,14 @@ export default function FeatureTags({
   onToggleFeature,
 }: FeatureTagsProps) {
   return (
-    <div className="mt-6">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-black">
+    <div className="mt-3 sm:mt-4">
+      <div className="mb-2 sm:mb-3">
+        <h3 className="text-base sm:text-lg font-semibold text-black">
           Quick Features
         </h3>
-        <span className="text-xs text-gray-600">
-          {selectedFeatures.length} selected
-        </span>
       </div>
       
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-2.5">
         {CORE_FEATURES.map((feature) => {
           const isSelected = selectedFeatures.includes(feature.id);
           const IconComponent = iconMap[feature.icon];
@@ -59,7 +56,7 @@ export default function FeatureTags({
               key={feature.id}
               onClick={() => onToggleFeature(feature.id)}
               className={`
-                p-4 rounded border-2 text-left
+                py-2.5 px-2 sm:px-3 rounded border-2 text-center min-h-[44px]
                 ${
                   isSelected
                     ? 'bg-black text-white border-black'
@@ -68,21 +65,21 @@ export default function FeatureTags({
               `}
               title={feature.description}
             >
-              <div className="flex items-start gap-3">
+              <div className="flex items-center justify-center gap-1.5 sm:gap-2">
                 <div className={`
-                  shrink-0 p-2 rounded
+                  shrink-0 p-1 sm:p-1.5 rounded
                   ${isSelected ? 'bg-white/20' : 'bg-gray-100'}
                 `}>
                   {IconComponent && (
                     <IconComponent 
-                      size={20} 
-                      className={isSelected ? 'text-white' : 'text-black'}
+                      size={16} 
+                      className={`sm:w-[18px] sm:h-[18px] ${isSelected ? 'text-white' : 'text-black'}`}
                     />
                   )}
                 </div>
                 
                 <div className="flex-1 min-w-0">
-                  <div className="font-medium text-sm leading-tight">
+                  <div className="font-medium text-xs sm:text-sm leading-tight">
                     {feature.name}
                   </div>
                 </div>
@@ -90,7 +87,7 @@ export default function FeatureTags({
                 {/* Checkmark for selected items */}
                 {isSelected && (
                   <div className="shrink-0">
-                    <Check size={16} className="text-white" />
+                    <Check size={14} className="text-white sm:w-[15px] sm:h-[15px]" />
                   </div>
                 )}
               </div>
@@ -100,7 +97,7 @@ export default function FeatureTags({
       </div>
       
       {/* Helper text */}
-      <p className="text-xs text-gray-500 mt-3 text-center">
+      <p className="text-xs text-gray-500 mt-2 text-center">
         Select features to automatically add them to your prompt
       </p>
     </div>
