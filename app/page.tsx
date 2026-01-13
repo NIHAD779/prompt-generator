@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import type { GeneratePromptResponse } from '@/lib/types';
+import { useState, useEffect } from 'react';
+import type { GeneratePromptResponse, CsrfTokenResponse } from '@/lib/types';
 import FeatureTags from './components/FeatureTags';
 import ReactMarkdown from 'react-markdown';
 
@@ -12,6 +12,28 @@ export default function Home() {
   const [error, setError] = useState('');
   const [copySuccess, setCopySuccess] = useState(false);
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
+  const [csrfToken, setCsrfToken] = useState<string>('');
+  const [showRateLimitModal, setShowRateLimitModal] = useState(false);
+  const [rateLimitResetTime, setRateLimitResetTime] = useState<number>(0);
+  const [userEmail, setUserEmail] = useState('');
+  const [emailSubmitted, setEmailSubmitted] = useState(false);
+
+  // Fetch CSRF token on component mount
+  useEffect(() => {
+    const fetchCsrfToken = async () => {
+      try {
+        const response = await fetch('/api/csrf');
+        if (response.ok) {
+          const data: CsrfTokenResponse = await response.json();
+          setCsrfToken(data.token);
+        }
+      } catch (err) {
+        console.error('Failed to fetch CSRF token:', err);
+      }
+    };
+
+    fetchCsrfToken();
+  }, []);
 
   const handleToggleFeature = (featureId: string) => {
     setSelectedFeatures(prev => 
@@ -27,6 +49,11 @@ export default function Home() {
       return;
     }
 
+    if (!csrfToken) {
+      setError('Security token not available. Please refresh the page.');
+      return;
+    }
+
     setIsLoading(true);
     setError('');
     setGeneratedPrompt('');
@@ -37,6 +64,7 @@ export default function Home() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken,
         },
         body: JSON.stringify({ 
           userInstructions,
@@ -44,14 +72,39 @@ export default function Home() {
         }),
       });
 
-      const data: GeneratePromptResponse = await response.json();
+      const data = await response.json() as GeneratePromptResponse;
 
       if (!response.ok) {
+        // Handle rate limit error specifically
+        if (response.status === 429) {
+          setRateLimitResetTime(data.resetTime || 0);
+          setShowRateLimitModal(true);
+          return; // Don't throw error, show modal instead
+        }
+        
+        // Handle CSRF token errors - fetch new token
+        if (response.status === 403 && data.error?.includes('CSRF')) {
+          // Fetch a new CSRF token
+          const csrfResponse = await fetch('/api/csrf');
+          if (csrfResponse.ok) {
+            const csrfData: CsrfTokenResponse = await csrfResponse.json();
+            setCsrfToken(csrfData.token);
+          }
+          throw new Error('Security token expired. Please try again.');
+        }
+        
         throw new Error(data.error || 'Failed to generate prompt');
       }
 
       if (data.success && data.generatedPrompt) {
         setGeneratedPrompt(data.generatedPrompt);
+        
+        // Fetch a new CSRF token for the next request
+        const csrfResponse = await fetch('/api/csrf');
+        if (csrfResponse.ok) {
+          const csrfData: CsrfTokenResponse = await csrfResponse.json();
+          setCsrfToken(csrfData.token);
+        }
       } else {
         throw new Error('No prompt generated');
       }
@@ -82,8 +135,126 @@ export default function Home() {
   const wordCount = userInstructions.trim().split(/\s+/).filter(Boolean).length;
   const charCount = userInstructions.length;
 
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!userEmail || !userEmail.includes('@')) {
+      alert('Please enter a valid email address');
+      return;
+    }
+
+    try {
+      // Send email to backend
+      const response = await fetch('/api/request-access', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: userEmail })
+      });
+
+      if (response.ok) {
+        setEmailSubmitted(true);
+      } else {
+        const data = await response.json();
+        alert(data.error || 'Failed to submit request. Please try again.');
+      }
+    } catch (err) {
+      console.error('Error submitting access request:', err);
+      alert('Failed to submit request. Please try again.');
+    }
+  };
+
+  const getTimeUntilReset = (resetTime: number): string => {
+    const now = Date.now();
+    const diff = resetTime - now;
+
+    if (diff <= 0) return '0 hours';
+
+    const hours = Math.ceil(diff / (60 * 60 * 1000));
+    return `${hours} hour${hours !== 1 ? 's' : ''}`;
+  };
+
   return (
     <div className="h-screen bg-white overflow-hidden flex flex-col">
+      {/* Rate Limit Modal */}
+      {showRateLimitModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg p-6 sm:p-8 max-w-md w-full border-2 border-black">
+            {!emailSubmitted ? (
+              <>
+                <h2 className="text-2xl font-bold text-black mb-4">Daily Limit Reached</h2>
+                <p className="text-gray-700 mb-4">
+                  You've used all 3 free prompts for today. Your limit will reset in{' '}
+                  <span className="font-semibold">{getTimeUntilReset(rateLimitResetTime)}</span>.
+                </p>
+                <p className="text-gray-700 mb-6">
+                  Need more access? Reach out to us with your email and we'll get you set up with increased limits!
+                </p>
+                
+                <form onSubmit={handleEmailSubmit} className="space-y-4">
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      value={userEmail}
+                      onChange={(e) => setUserEmail(e.target.value)}
+                      placeholder="your.email@example.com"
+                      className="w-full px-4 py-2 border-2 border-gray-300 rounded focus:outline-none focus:border-black text-black"
+                      required
+                    />
+                  </div>
+                  
+                  <div className="flex gap-3">
+                    <button
+                      type="submit"
+                      className="flex-1 bg-black text-white font-semibold py-2 px-4 rounded hover:bg-gray-800"
+                    >
+                      Request Access
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowRateLimitModal(false);
+                        setUserEmail('');
+                      }}
+                      className="flex-1 bg-white text-black font-semibold py-2 px-4 rounded border-2 border-black hover:bg-gray-100"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </form>
+              </>
+            ) : (
+              <>
+                <div className="text-center">
+                  <div className="mb-4 flex justify-center">
+                    <svg className="w-16 h-16 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <h2 className="text-2xl font-bold text-black mb-4">Thank You!</h2>
+                  <p className="text-gray-700 mb-6">
+                    We've received your request for increased access. We'll reach out to <span className="font-semibold">{userEmail}</span> shortly!
+                  </p>
+                  <button
+                    onClick={() => {
+                      setShowRateLimitModal(false);
+                      setEmailSubmitted(false);
+                      setUserEmail('');
+                    }}
+                    className="w-full bg-black text-white font-semibold py-2 px-4 rounded hover:bg-gray-800"
+                  >
+                    Close
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4 max-w-4xl flex-1 flex flex-col overflow-hidden pb-16 sm:pb-20">
         {/* Header */}
         <header className="text-center mb-3 sm:mb-4">

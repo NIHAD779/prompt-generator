@@ -19,10 +19,24 @@ export interface GeneratePromptResponse {
   success: boolean;
   generatedPrompt?: string;
   error?: string;
+  resetTime?: number; // For rate limit errors
+  remaining?: number; // For rate limit info
 }
 
 export interface ApiError {
   error: string;
   details?: string;
+  resetTime?: number; // For rate limit errors
+  remaining?: number; // For rate limit info
+}
+
+export interface CsrfTokenResponse {
+  token: string;
+}
+
+export interface RateLimitInfo {
+  limit: number;
+  remaining: number;
+  resetTime: number;
 }
 
