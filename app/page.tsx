@@ -17,6 +17,7 @@ export default function Home() {
   const [rateLimitResetTime, setRateLimitResetTime] = useState<number>(0);
   const [userEmail, setUserEmail] = useState('');
   const [emailSubmitted, setEmailSubmitted] = useState(false);
+  const [showCsrfErrorModal, setShowCsrfErrorModal] = useState(false);
 
   // Fetch CSRF token on component mount
   useEffect(() => {
@@ -82,15 +83,56 @@ export default function Home() {
           return; // Don't throw error, show modal instead
         }
         
-        // Handle CSRF token errors - fetch new token
+        // Handle CSRF token errors - fetch new token and auto-retry
         if (response.status === 403 && data.error?.includes('CSRF')) {
           // Fetch a new CSRF token
           const csrfResponse = await fetch('/api/csrf');
           if (csrfResponse.ok) {
             const csrfData: CsrfTokenResponse = await csrfResponse.json();
             setCsrfToken(csrfData.token);
+            
+            // Automatically retry the request with the new token
+            try {
+              const retryResponse = await fetch('/api/generate-prompt', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRF-Token': csrfData.token,
+                },
+                body: JSON.stringify({ 
+                  userInstructions,
+                  selectedFeatures,
+                }),
+              });
+              
+              const retryData = await retryResponse.json() as GeneratePromptResponse;
+              
+              if (retryResponse.ok && retryData.success && retryData.generatedPrompt) {
+                setGeneratedPrompt(retryData.generatedPrompt);
+                
+                // Fetch a new CSRF token for the next request
+                const newCsrfResponse = await fetch('/api/csrf');
+                if (newCsrfResponse.ok) {
+                  const newCsrfData: CsrfTokenResponse = await newCsrfResponse.json();
+                  setCsrfToken(newCsrfData.token);
+                }
+                return;
+              }
+              
+              // If retry response has rate limit, handle it
+              if (retryResponse.status === 429) {
+                setRateLimitResetTime(retryData.resetTime || 0);
+                setShowRateLimitModal(true);
+                return;
+              }
+            } catch (retryErr) {
+              console.error('Retry failed:', retryErr);
+            }
           }
-          throw new Error('Security token expired. Please try again.');
+          
+          // Only show modal if retry fails
+          setShowCsrfErrorModal(true);
+          return;
         }
         
         throw new Error(data.error || 'Failed to generate prompt');
@@ -174,10 +216,10 @@ export default function Home() {
   };
 
   return (
-    <div className="h-screen bg-white overflow-hidden flex flex-col">
+    <div className="h-screen overflow-hidden flex flex-col">
       {/* Rate Limit Modal */}
       {showRateLimitModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg p-6 sm:p-8 max-w-md w-full border-2 border-black">
             {!emailSubmitted ? (
               <>
@@ -251,6 +293,31 @@ export default function Home() {
                 </div>
               </>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* CSRF Error Modal */}
+      {showCsrfErrorModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg p-6 sm:p-8 max-w-md w-full border-2 border-black">
+            <div className="text-center">
+              <div className="mb-4 flex justify-center">
+                <svg className="w-16 h-16 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold text-black mb-4">Security Token Expired</h2>
+              <p className="text-gray-700 mb-6">
+                Your security token has expired. A new token has been generated. Please try submitting your request again.
+              </p>
+              <button
+                onClick={() => setShowCsrfErrorModal(false)}
+                className="w-full bg-black text-white font-semibold py-2 px-4 rounded hover:bg-gray-800"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
