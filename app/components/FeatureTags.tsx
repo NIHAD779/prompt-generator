@@ -11,7 +11,6 @@ import {
   Search,
   Smartphone,
   Loader,
-  Check,
 } from 'lucide-react';
 import { CORE_FEATURES } from '@/lib/features';
 import type { Feature } from '@/lib/types';
@@ -83,13 +82,6 @@ export default function FeatureTags({
                     {feature.name}
                   </div>
                 </div>
-                
-                {/* Checkmark for selected items */}
-                {isSelected && (
-                  <div className="shrink-0">
-                    <Check size={14} className="text-white sm:w-[15px] sm:h-[15px]" />
-                  </div>
-                )}
               </div>
             </button>
           );

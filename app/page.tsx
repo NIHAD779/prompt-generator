@@ -322,19 +322,19 @@ export default function Home() {
         </div>
       )}
 
-      <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4 max-w-4xl flex-1 flex flex-col overflow-hidden pb-16 sm:pb-20">
+      <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4 max-w-5xl flex-1 flex flex-col overflow-hidden pb-16 sm:pb-20">
         {/* Header */}
         <header className="text-center mb-3 sm:mb-4">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-black mb-2 sm:mb-4 font-sans">
             Heal My Prompt
           </h1>
-          <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-4xl mx-auto px-2 sm:px-0">
+          <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-5xl mx-auto px-2 sm:px-0">
             Transform your ideas into optimized prompts for vibe coding tools like Lovable, Bolt, and Replit
           </p>
         </header>
 
         {/* Main Content - Single Column */}
-        <main className="max-w-4xl mx-auto flex-1 overflow-y-auto" role="main">
+        <main className="max-w-5xl mx-auto flex-1 overflow-y-auto" role="main">
           {/* State 1: Input Form (show when no prompt and not loading) */}
           {!isLoading && !generatedPrompt && (
             <article className="border-2 border-black rounded-lg p-4 sm:p-6" aria-labelledby="input-heading">
