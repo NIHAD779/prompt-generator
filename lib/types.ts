@@ -40,3 +40,11 @@ export interface RateLimitInfo {
   resetTime: number;
 }
 
+export interface Suggestion {
+  id: string;
+  title: string;
+  description: string;
+  userInstructions: string;
+  selectedFeatures: string[];
+}
+

@@ -3,8 +3,8 @@ import OpenAI from 'openai';
 import { getPromptGuidelines } from '@/lib/prompt-guidelines';
 import { getPromptTextForFeatures } from '@/lib/features';
 import type { GeneratePromptRequest, GeneratePromptResponse, ApiError } from '@/lib/types';
-import { checkRateLimit, getClientIp, getTimeUntilReset } from '@/lib/rate-limiter';
 import { consumeCsrfToken } from '@/lib/csrf';
+import { logPromptGeneration } from '@/lib/google-sheets';
 
 export async function POST(request: NextRequest) {
   try {
@@ -31,21 +31,6 @@ export async function POST(request: NextRequest) {
         details: 'Please refresh the page and try again',
       };
       return NextResponse.json(errorResponse, { status: 403 });
-    }
-
-    // 3. Check Rate Limit (IP-based)
-    const clientIp = getClientIp(request);
-    const rateLimitResult = checkRateLimit(clientIp);
-
-    if (!rateLimitResult.success) {
-      const timeRemaining = getTimeUntilReset(rateLimitResult.resetTime);
-      const errorResponse: ApiError = {
-        error: 'Daily limit reached',
-        details: `You have reached the maximum of ${rateLimitResult.limit} requests per day. Please try again in ${timeRemaining}.`,
-        resetTime: rateLimitResult.resetTime,
-        remaining: rateLimitResult.remaining,
-      };
-      return NextResponse.json(errorResponse, { status: 429 });
     }
 
     // Parse request body
@@ -124,20 +109,23 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(errorResponse, { status: 500 });
     }
 
-    // Return success response with rate limit headers
+    // Log to Google Sheets (fire-and-forget, non-blocking)
+    logPromptGeneration(
+      userInstructions,
+      selectedFeatures,
+      generatedPrompt,
+      'client-side-limited' // IP tracking removed, rate limiting moved to client
+    ).catch((error) => {
+      console.error('Failed to log prompt generation to Google Sheets:', error);
+    });
+
+    // Return success response
     const response: GeneratePromptResponse = {
       success: true,
       generatedPrompt,
     };
 
-    return NextResponse.json(response, { 
-      status: 200,
-      headers: {
-        'X-RateLimit-Limit': rateLimitResult.limit.toString(),
-        'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
-        'X-RateLimit-Reset': rateLimitResult.resetTime.toString(),
-      },
-    });
+    return NextResponse.json(response, { status: 200 });
   } catch (error) {
     console.error('Error generating prompt:', error);
 
