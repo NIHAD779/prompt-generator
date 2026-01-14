@@ -16,7 +16,6 @@ interface PromptLogData {
 interface EmailLogData {
   type: 'email';
   email: string;
-  clientIp: string;
 }
 
 /**
@@ -86,13 +85,11 @@ export async function logPromptGeneration(
  * Logs an email access request to the Emails sheet
  */
 export async function logEmailRequest(
-  email: string,
-  clientIp: string
+  email: string
 ): Promise<void> {
   const data: EmailLogData = {
     type: 'email',
     email,
-    clientIp,
   };
 
   await sendToGoogleSheets(data);

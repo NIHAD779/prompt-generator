@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { logEmailRequest } from '@/lib/google-sheets';
-import { getClientIp } from '@/lib/rate-limiter';
 // import { validateOrigin } from '@/lib/csrf';
 
 interface AccessRequest {
@@ -53,9 +52,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get client IP for logging
-    const clientIp = getClientIp(request);
-
     // Store the access request
     const accessRequest: AccessRequest = {
       email: email.toLowerCase().trim(),
@@ -70,8 +66,7 @@ export async function POST(request: NextRequest) {
 
     // Log to Google Sheets (fire-and-forget, non-blocking)
     logEmailRequest(
-      email.toLowerCase().trim(),
-      clientIp
+      email.toLowerCase().trim()
     ).catch((error) => {
       console.error('Failed to log email request to Google Sheets:', error);
     });
