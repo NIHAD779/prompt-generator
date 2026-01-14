@@ -31,8 +31,8 @@ export default function WizardHeader({ currentScreen, hasGeneratedPrompt, hasPro
       return 'future';
     }
     if (stepId === 'result') {
-      if (hasPromptBeenCopied) return 'completed';
       if (currentScreen === 'result') return 'current';
+      if (hasPromptBeenCopied) return 'completed';
       return 'future';
     }
     return 'future';
@@ -42,8 +42,10 @@ export default function WizardHeader({ currentScreen, hasGeneratedPrompt, hasPro
     const status = getStepStatus(stepId);
     if (status === 'current') return false;
     if (status === 'completed') return true;
-    // Can't navigate to result screen unless prompt has been generated
-    if (stepId === 'result' && !hasGeneratedPrompt) return false;
+    // Allow navigating to result screen if prompt has been generated
+    if (stepId === 'result' && hasGeneratedPrompt) return true;
+    // Allow navigating back to form screen once we've been there
+    if (stepId === 'form' && (currentScreen === 'result')) return true;
     return false;
   };
 
@@ -69,22 +71,23 @@ export default function WizardHeader({ currentScreen, hasGeneratedPrompt, hasPro
           const isClickable = isStepClickable(step.id);
           const isCompleted = status === 'completed';
           const isCurrent = status === 'current';
+          const showCheckmark = (isCompleted && !isCurrent) || (isCurrent && step.id === 'result' && hasPromptBeenCopied);
 
           return (
             <div key={step.id} className="flex items-center gap-2">
               <button
                 onClick={() => isClickable && onStepClick(step.id)}
-                disabled={!isClickable}
+                disabled={!isClickable && !isCurrent}
                 className={`
                   flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full   transition-all text-xs font-medium
                   ${isCurrent ? 'bg-black text-white' : ''}
-                  ${isCompleted ? 'bg-gray-100 text-black' : ''}
+                  ${isCompleted && !isCurrent ? 'bg-gray-100 text-black' : ''}
                   ${!isClickable && !isCurrent && !isCompleted ? 'bg-gray-50 text-gray-400' : ''}
                 `}
                 aria-label={`${step.fullLabel}${isCompleted ? ' - completed' : ''}${isCurrent ? ' - current step' : ''}`}
                 aria-current={isCurrent ? 'step' : undefined}
               >
-                {isCompleted ? (
+                {showCheckmark ? (
                   <Check size={12} strokeWidth={3} />
                 ) : (
                   <span className="w-4 h-4 flex items-center justify-center rounded-full bg-current/10 text-[10px]">
@@ -109,23 +112,24 @@ export default function WizardHeader({ currentScreen, hasGeneratedPrompt, hasPro
           const isClickable = isStepClickable(step.id);
           const isCompleted = status === 'completed';
           const isCurrent = status === 'current';
+          const showCheckmark = (isCompleted && !isCurrent) || (isCurrent && step.id === 'result' && hasPromptBeenCopied);
 
           return (
             <div key={step.id} className="flex items-center gap-4">
               <button
                 onClick={() => isClickable && onStepClick(step.id)}
-                disabled={!isClickable}
+                disabled={!isClickable && !isCurrent}
                 className={`
                   flex items-center gap-2 px-3 py-2 rounded-lg transition-all
                   ${isCurrent ? 'bg-black text-white font-semibold' : ''}
-                  ${isCompleted ? 'text-black hover:bg-gray-100 cursor-pointer font-medium' : ''}
+                  ${isCompleted && !isCurrent ? 'text-black hover:bg-gray-100 cursor-pointer font-medium' : ''}
                   ${!isClickable && !isCurrent ? 'cursor-not-allowed opacity-50' : ''}
                 `}
                 aria-label={`${step.fullLabel}${isCompleted ? ' - completed' : ''}${isCurrent ? ' - current step' : ''}`}
                 aria-current={isCurrent ? 'step' : undefined}
               >
-                {isCompleted && (
-                  <span className="flex items-center justify-center w-5 h-5 rounded-full bg-black text-white">
+                {showCheckmark && (
+                  <span className={`flex items-center justify-center w-5 h-5 rounded-full ${isCurrent ? 'bg-white text-black' : 'bg-black text-white'}`}>
                     <Check size={14} strokeWidth={3} />
                   </span>
                 )}

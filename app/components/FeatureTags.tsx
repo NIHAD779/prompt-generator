@@ -2,30 +2,30 @@
 
 import React from 'react';
 import { 
+  Shield,
+  CreditCard,
+  Database,
   Moon,
-  Sparkles,
-  Bell,
-  Menu,
-  UserPlus,
-  Globe,
-  Search,
   Smartphone,
-  Loader,
+  MessageSquare,
+  Bell,
+  LayoutDashboard,
+  Search,
 } from 'lucide-react';
 import { CORE_FEATURES } from '@/lib/features';
 import type { Feature } from '@/lib/types';
 
 // Map icon names to Lucide components
 const iconMap: Record<string, React.ElementType> = {
+  Shield,
+  CreditCard,
+  Database,
   Moon,
-  Sparkles,
-  Bell,
-  Menu,
-  UserPlus,
-  Globe,
-  Search,
   Smartphone,
-  Loader,
+  MessageSquare,
+  Bell,
+  LayoutDashboard,
+  Search,
 };
 
 interface FeatureTagsProps {

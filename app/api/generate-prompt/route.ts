@@ -3,36 +3,10 @@ import OpenAI from 'openai';
 import { getPromptGuidelines } from '@/lib/prompt-guidelines';
 import { getPromptTextForFeatures } from '@/lib/features';
 import type { GeneratePromptRequest, GeneratePromptResponse, ApiError } from '@/lib/types';
-import { consumeCsrfToken } from '@/lib/csrf';
 import { logPromptGeneration } from '@/lib/google-sheets';
 
 export async function POST(request: NextRequest) {
   try {
-    // 1. Validate Origin/Referer (CSRF Protection)
-    // TODO: Uncomment when properly configured
-    // const allowedOrigins = [
-    //   process.env.NEXT_PUBLIC_APP_URL || 'https://www.healmyprompt.com/',
-    //   'http://localhost:3000', // Always allow localhost for development
-    // ];
-
-    // if (!validateOrigin(request, allowedOrigins)) {
-    //   const errorResponse: ApiError = {
-    //     error: 'Invalid request origin',
-    //     details: 'This API endpoint can only be accessed from the application',
-    //   };
-    //   return NextResponse.json(errorResponse, { status: 403 });
-    // }
-
-    // 2. Validate CSRF Token
-    const csrfToken = request.headers.get('x-csrf-token');
-    if (!consumeCsrfToken(csrfToken)) {
-      const errorResponse: ApiError = {
-        error: 'Invalid or expired CSRF token',
-        details: 'Please refresh the page and try again',
-      };
-      return NextResponse.json(errorResponse, { status: 403 });
-    }
-
     // Parse request body
     const body: GeneratePromptRequest = await request.json();
     const { userInstructions, selectedFeatures = [] } = body;
@@ -81,7 +55,10 @@ export async function POST(request: NextRequest) {
     // Combine guidelines with user instructions
     const systemPrompt = guidelines;
 
-    // Call OpenAI API
+    // Call OpenAI API with performance tracking
+    const openaiStartTime = Date.now();
+    console.log('⏱️  Starting OpenAI API call...');
+    
     const completion = await openai.chat.completions.create({
       model: 'gpt-4.1',
       messages: [
@@ -97,6 +74,10 @@ export async function POST(request: NextRequest) {
       temperature: 0.7,
       max_tokens: 2000,
     });
+
+    const openaiEndTime = Date.now();
+    const openaiDuration = openaiEndTime - openaiStartTime;
+    console.log(`✅ OpenAI API response received in ${openaiDuration}ms (${(openaiDuration / 1000).toFixed(2)}s)`);
 
     // Extract generated prompt
     const generatedPrompt = completion.choices[0]?.message?.content;

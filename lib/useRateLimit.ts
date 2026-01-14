@@ -14,12 +14,12 @@ interface RateLimitStatus {
 }
 
 const STORAGE_KEY = 'healmyprompt_usage';
-const MAX_REQUESTS = 3;
+const MAX_REQUESTS = 10;
 const WINDOW_MS = 24 * 60 * 60 * 1000; // 24 hours
 
 /**
  * Custom hook to manage rate limiting using localStorage
- * Enforces a limit of 3 requests per 24-hour window
+ * Enforces a limit of 10 requests per 24-hour window
  */
 export function useRateLimit() {
   const [rateLimitStatus, setRateLimitStatus] = useState<RateLimitStatus>({
