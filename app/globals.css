@@ -75,6 +75,17 @@ body {
   }
 }
 
+/* Safe area for devices with notch/home indicator */
+.safe-area-bottom {
+  padding-bottom: max(0.625rem, env(safe-area-inset-bottom));
+}
+
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .safe-area-bottom {
+    padding-bottom: calc(0.625rem + env(safe-area-inset-bottom));
+  }
+}
+
 /* Fade + Scale Transition Animations */
 .slide-container {
   position: relative;
@@ -90,14 +101,18 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem 0.75rem;
+  padding: 2rem 1rem;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
               opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@media (min-width: 640px) {
+@media (max-width: 640px) {
   .slide-screen {
-    padding: 2rem 1rem;
+    position: relative;
+    height: auto;
+    min-height: 100%;
+    align-items: flex-start;
+    padding: 1rem 0.75rem;
   }
 }
 
@@ -134,6 +149,13 @@ body {
 @media (max-width: 640px) {
   body {
     overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 100vh;
+    min-height: 100dvh; /* Dynamic viewport height for mobile browsers */
+  }
+  
+  html {
+    scroll-behavior: smooth;
   }
 }
 

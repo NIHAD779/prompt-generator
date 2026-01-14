@@ -277,7 +277,7 @@ export default function Home() {
     <div className="min-h-screen flex flex-col pb-16">
       {/* Top Bar - Only show on form and result screens */}
       {(currentScreen === 'form' || currentScreen === 'result') && (
-        <div className="fixed top-0 left-0 right-0 z-40 bg-white py-3 px-3 sm:py-6 sm:px-6 border-b border-gray-100">
+        <div className="fixed top-0 left-0 right-0 z-40 bg-white py-4 px-4 sm:py-6 sm:px-6">
           <div className="max-w-7xl mx-auto flex items-center justify-center">
             <WizardHeader 
               currentScreen={currentScreen}
@@ -417,7 +417,7 @@ export default function Home() {
 
         {/* Form Screen */}
         <div 
-          className={`slide-screen flex items-center justify-center pt-16 sm:pt-24 ${
+          className={`slide-screen flex items-center justify-center ${
             currentScreen === 'form' 
               ? 'slide-enter-active' 
               : slideDirection === 'left' 
@@ -426,12 +426,13 @@ export default function Home() {
           }`}
           style={{
             display: currentScreen === 'form' || isTransitioning ? 'flex' : 'none',
+            paddingTop: '7rem',
           }}
         >
-          <div className="w-full max-w-4xl mx-auto px-3 sm:px-4">
+          <div className="w-full max-w-4xl mx-auto px-4">
             {/* Form Content */}
             {isLoading ? (
-              <section className="border-2 border-black rounded-lg p-4 sm:p-6 md:p-8 flex items-center justify-center min-h-[400px] sm:min-h-[500px] md:min-h-[600px]" role="status" aria-live="polite">
+              <section className="border-2 border-black rounded-lg p-6 sm:p-8 flex items-center justify-center min-h-[400px] sm:min-h-[600px]" role="status" aria-live="polite">
                 <div className="text-center">
                   <div className="inline-block animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-4 border-black border-t-transparent mb-4 sm:mb-6" aria-hidden="true"></div>
                   <p className="text-lg sm:text-xl text-black font-medium">Crafting your perfect prompt...</p>
@@ -439,7 +440,7 @@ export default function Home() {
                 </div>
               </section>
             ) : (
-              <article className="border-2 border-black rounded-lg p-4 sm:p-6 md:p-8 min-h-[400px] sm:min-h-[500px] md:min-h-[600px] flex flex-col" aria-labelledby="input-heading">
+              <article className="border-2 border-black rounded-lg p-6 sm:p-8 min-h-[400px] sm:min-h-[600px] flex flex-col" aria-labelledby="input-heading">
                 <div className="flex-1 flex flex-col">
                   <div className="mb-3 sm:mb-4">
                     <h2 id="input-heading" className="text-xl sm:text-2xl md:text-3xl font-semibold text-black">
@@ -451,7 +452,7 @@ export default function Home() {
                     value={userInstructions}
                     onChange={(e) => setUserInstructions(e.target.value)}
                     placeholder="Describe what you want to build..."
-                    className="w-full h-36 sm:h-44 md:h-48 p-3 sm:p-4 text-sm sm:text-base rounded border-2 border-gray-300 resize-none bg-white text-black placeholder-gray-400 focus:outline-none focus:border-black"
+                    className="w-full h-36 sm:h-48 p-3 sm:p-4 text-sm sm:text-base rounded border-2 border-gray-300 resize-none bg-white text-black placeholder-gray-400 focus:outline-none focus:border-black"
                     maxLength={5000}
                     aria-label="Enter your project instructions"
                   />
@@ -462,18 +463,18 @@ export default function Home() {
                   />
                 </div>
 
-                <div className="mt-auto pt-4 sm:pt-6">
+                <div className="mt-auto pt-6">
                   <button
                     onClick={handleGenerate}
                     disabled={isLoading || !userInstructions.trim()}
-                    className="w-full bg-black text-white font-semibold py-3 sm:py-4 px-4 sm:px-6 rounded disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-800 text-sm sm:text-base"
+                    className="w-full bg-black text-white font-semibold py-4 px-6 rounded disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-800 text-base"
                     aria-label="Generate optimized prompt from your instructions"
                   >
                     Generate Optimized Prompt
                   </button>
 
                   {error && (
-                    <div className="mt-3 sm:mt-4 p-3 sm:p-4 border-2 border-red-500 rounded text-red-700 text-sm sm:text-base" role="alert" aria-live="assertive">
+                    <div className="mt-4 p-4 border-2 border-red-500 rounded text-red-700 text-base" role="alert" aria-live="assertive">
                       {error}
                     </div>
                   )}
@@ -485,7 +486,7 @@ export default function Home() {
 
         {/* Result Screen */}
         <div 
-          className={`slide-screen flex items-center justify-center pt-16 sm:pt-24 ${
+          className={`slide-screen flex items-center justify-center ${
             currentScreen === 'result' 
               ? 'slide-enter-active' 
               : slideDirection === 'left' 
@@ -494,20 +495,21 @@ export default function Home() {
           }`}
           style={{
             display: currentScreen === 'result' || isTransitioning ? 'flex' : 'none',
+            paddingTop: '7rem',
           }}
         >
-          <div className="w-full max-w-4xl mx-auto px-3 sm:px-4">
+          <div className="w-full max-w-4xl mx-auto px-4">
             {/* Result Content */}
-            <article className="border-2 border-black rounded-lg p-4 sm:p-6 md:p-8 min-h-[400px] sm:min-h-[500px] md:min-h-[600px] flex flex-col" aria-labelledby="result-heading">
+            <article className="border-2 border-black rounded-lg p-6 sm:p-8 min-h-[400px] sm:min-h-[600px] flex flex-col" aria-labelledby="result-heading">
               <div className="flex-1 flex flex-col">
-                <div className="flex flex-col gap-3 mb-3 sm:mb-4">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
                   <h2 id="result-heading" className="text-xl sm:text-2xl md:text-3xl font-semibold text-black">
                     Generated Prompt
                   </h2>
                   <div className="flex gap-2 w-full sm:w-auto">
                     <button
                       onClick={handleToggleEditMode}
-                      className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 bg-white hover:bg-gray-100 text-black rounded text-sm sm:text-base font-medium border-2 border-black"
+                      className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-white hover:bg-gray-100 text-black rounded text-sm sm:text-base font-medium border-2 border-black"
                       aria-label={isEditMode ? "Preview rendered prompt" : "Edit prompt"}
                     >
                       {isEditMode ? (
@@ -528,7 +530,7 @@ export default function Home() {
                     </button>
                     <button
                       onClick={handleCopyToClipboard}
-                      className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 bg-black hover:bg-gray-800 text-white rounded text-sm sm:text-base font-medium"
+                      className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-black hover:bg-gray-800 text-white rounded text-sm sm:text-base font-medium"
                       aria-label={copySuccess ? "Prompt copied to clipboard" : "Copy prompt to clipboard"}
                     >
                       {copySuccess ? (
@@ -550,7 +552,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                <p className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4">
+                <p className="text-xs sm:text-sm text-gray-600 mb-4">
                   {isEditMode ? 'Edit the prompt below before copying it' : 'Click Edit to modify the prompt'}
                 </p>
 
@@ -558,11 +560,11 @@ export default function Home() {
                   <textarea
                     value={generatedPrompt}
                     onChange={(e) => setGeneratedPrompt(e.target.value)}
-                    className="w-full h-56 sm:h-72 md:h-80 p-3 sm:p-4 border-2 border-gray-300 rounded bg-white text-black font-mono text-xs sm:text-sm resize-none focus:outline-none focus:border-black overflow-y-auto"
+                    className="w-full h-56 sm:h-80 p-4 border-2 border-gray-300 rounded bg-white text-black font-mono text-xs sm:text-sm resize-none focus:outline-none focus:border-black overflow-y-auto"
                     aria-label="Edit generated prompt"
                   />
                 ) : (
-                  <div className="w-full h-56 sm:h-72 md:h-80 p-3 sm:p-4 border-2 border-gray-300 rounded bg-white text-black overflow-y-auto markdown-content">
+                  <div className="w-full h-56 sm:h-80 p-4 border-2 border-gray-300 rounded bg-white text-black overflow-y-auto markdown-content">
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>
                       {generatedPrompt}
                     </ReactMarkdown>
@@ -570,10 +572,10 @@ export default function Home() {
                 )}
               </div>
 
-              <div className="mt-auto pt-4 sm:pt-6">
+              <div className="mt-auto pt-6">
                 <button
                   onClick={handleGenerateNew}
-                  className="w-full bg-white text-black font-semibold py-3 sm:py-4 px-4 sm:px-6 rounded border-2 border-black hover:bg-gray-100 text-sm sm:text-base"
+                  className="w-full bg-white text-black font-semibold py-3 sm:py-4 px-6 rounded border-2 border-black hover:bg-gray-100 text-sm sm:text-base"
                   aria-label="Generate a new prompt"
                 >
                   Generate New Prompt

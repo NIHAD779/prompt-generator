@@ -61,7 +61,7 @@ export default function WizardHeader({ currentScreen, hasGeneratedPrompt, hasPro
   }
 
   return (
-    <div className="wizard-header w-full">
+    <div className="wizard-header md:max-w-4xl mx-auto">
       {/* Mobile: Compact step indicators */}
       <div className="flex sm:hidden items-center justify-center gap-2 w-full">
         {visibleSteps.map((step, index) => {

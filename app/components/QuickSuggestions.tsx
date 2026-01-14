@@ -19,18 +19,18 @@ interface QuickSuggestionsProps {
 
 export default function QuickSuggestions({ onSelectSuggestion, onSelectCustom }: QuickSuggestionsProps) {
   return (
-    <section className="w-full max-w-4xl mx-auto px-3 sm:px-4" aria-labelledby="suggestions-heading">
+    <section className="w-full max-w-4xl mx-auto px-4" aria-labelledby="suggestions-heading">
       {/* Main Header */}
-      <div className="text-center mb-8 sm:mb-10 md:mb-12">
-        <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-bold text-black mb-2 sm:mb-3 font-sans">
+      <div className="text-center mb-8 sm:mb-12">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-black mb-3 font-sans">
           Heal My Prompt
         </h1>
-        <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-3xl mx-auto mb-6 sm:mb-8 px-2">
+        <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto mb-8">
           Turn your ideas into optimized prompts for Lovable, Bolt, and Replit
         </p>
         
         {/* Section Label */}
-        <h2 id="suggestions-heading" className="text-xs sm:text-sm md:text-base font-medium text-gray-500 tracking-wider mb-4 sm:mb-6">
+        <h2 id="suggestions-heading" className="text-sm sm:text-base font-medium text-gray-500 tracking-wider mb-6">
           What do you want to build?
         </h2>
       </div>
