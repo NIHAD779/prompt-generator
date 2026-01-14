@@ -7,14 +7,14 @@ interface FooterProps {
 export default function Footer({ onLogoClick }: FooterProps) {
   return (
     <footer 
-      className="fixed bottom-0 left-0 right-0 bg-gray-100 border-t border-gray-200 py-1 px-3 z-50 safe-area-bottom"
+      className="fixed bottom-0 left-0 right-0 bg-gray-100 border-t border-gray-200 py-0.5 px-2 sm:py-1 sm:px-3 z-50 safe-area-bottom"
       role="contentinfo"
     >
-      <div className="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-1">
+      <div className="max-w-4xl mx-auto flex flex-row justify-between items-center gap-1 sm:gap-2">
         {/* Left Side - Logo and Brand */}
         <button
           onClick={onLogoClick}
-          className="flex items-center gap-1.5 hover:opacity-80 transition-opacity cursor-pointer"
+          className="flex items-center gap-1 sm:gap-1.5 hover:opacity-80 transition-opacity cursor-pointer"
           aria-label="Go to home screen"
         >
           <Image 
@@ -22,13 +22,13 @@ export default function Footer({ onLogoClick }: FooterProps) {
             alt="Heal My Prompt Logo" 
             width={32} 
             height={32}
-            className="w-5 h-5 sm:w-6 sm:h-6 rounded-md"
+            className="w-4 h-4 sm:w-6 sm:h-6 rounded-md"
           />
-          <span className="text-sm sm:text-base font-bold text-black">Heal My Prompt</span>
+          <span className="text-xs sm:text-base font-bold text-black">Heal My Prompt</span>
         </button>
         
         {/* Right Side - Attribution */}
-        <p className="text-xs sm:text-sm text-gray-950 leading-relaxed">
+        <p className="text-[10px] sm:text-sm text-gray-950 leading-tight sm:leading-relaxed">
           Made with{' '}
           <span className="text-gray-950" aria-label="love">❤️</span>
           {' '}by{' '}
