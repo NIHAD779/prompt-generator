@@ -7,10 +7,10 @@ interface FooterProps {
 export default function Footer({ onLogoClick }: FooterProps) {
   return (
     <footer 
-      className="fixed bottom-0 left-0 right-0 bg-gray-100 border-t border-gray-200 py-1 px-3 z-50"
+      className="fixed bottom-0 left-0 right-0 bg-gray-100 border-t border-gray-200 py-2 px-3 sm:py-1 z-50"
       role="contentinfo"
     >
-      <div className="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-1">
+      <div className="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-1.5 sm:gap-1">
         {/* Left Side - Logo and Brand */}
         <button
           onClick={onLogoClick}
@@ -24,11 +24,11 @@ export default function Footer({ onLogoClick }: FooterProps) {
             height={32}
             className="w-5 h-5 sm:w-6 sm:h-6 rounded-md"
           />
-          <span className="text-sm sm:text-base font-bold text-black">Heal My Prompt</span>
+          <span className="text-xs sm:text-sm md:text-base font-bold text-black">Heal My Prompt</span>
         </button>
         
         {/* Right Side - Attribution */}
-        <p className="text-xs sm:text-sm text-gray-950 leading-relaxed">
+        <p className="text-[10px] sm:text-xs md:text-sm text-gray-950 leading-relaxed text-center sm:text-right">
           Made with{' '}
           <span className="text-gray-950" aria-label="love">❤️</span>
           {' '}by{' '}
@@ -36,7 +36,7 @@ export default function Footer({ onLogoClick }: FooterProps) {
             href="https://www.linkedin.com/in/muhammed-nihad-u-813357212/" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-gray-950 hover:text-black font-bold  decoration-gray-400 hover:decoration-black transition-colors"
+            className="text-gray-950 hover:text-black font-bold decoration-gray-400 hover:decoration-black transition-colors"
             aria-label="Visit Nihad's LinkedIn profile"
           >
             Nihad
