@@ -201,20 +201,41 @@ export default function Home() {
   };
 
   const handleUseSuggestion = (suggestion: Suggestion) => {
+    // Reset all states when starting fresh from home
     setUserInstructions(suggestion.userInstructions);
     setSelectedFeatures(suggestion.selectedFeatures);
     setError('');
+    setGeneratedPrompt('');
+    setIsEditMode(false);
+    setHasPromptBeenCopied(false);
+    setCopySuccess(false);
     navigateToScreen('form', 'left');
   };
 
   const handleSelectCustom = () => {
+    // Reset all states when starting fresh from home
     setUserInstructions('');
     setSelectedFeatures([]);
     setError('');
+    setGeneratedPrompt('');
+    setIsEditMode(false);
+    setHasPromptBeenCopied(false);
+    setCopySuccess(false);
     navigateToScreen('form', 'left');
   };
 
   const handleStepClick = (screen: Screen) => {
+    // Reset all states when going back to selection (home) screen
+    if (screen === 'selection') {
+      setGeneratedPrompt('');
+      setUserInstructions('');
+      setSelectedFeatures([]);
+      setError('');
+      setIsEditMode(false);
+      setHasPromptBeenCopied(false);
+      setCopySuccess(false);
+    }
+    
     // Determine slide direction based on navigation
     const direction = screen === 'selection' || (screen === 'form' && currentScreen === 'result') ? 'right' : 'left';
     navigateToScreen(screen, direction);
@@ -429,7 +450,7 @@ export default function Home() {
             paddingTop: '7rem',
           }}
         >
-          <div className="w-full max-w-4xl mx-auto px-4">
+          <div className="w-full max-w-4xl mx-auto ">
             {/* Form Content */}
             {isLoading ? (
               <section className="border-2 border-black rounded-lg p-6 sm:p-8 flex items-center justify-center min-h-[400px] sm:min-h-[600px]" role="status" aria-live="polite">
