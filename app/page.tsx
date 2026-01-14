@@ -277,7 +277,7 @@ export default function Home() {
     <div className="min-h-screen flex flex-col pb-16">
       {/* Top Bar - Only show on form and result screens */}
       {(currentScreen === 'form' || currentScreen === 'result') && (
-        <div className="fixed top-0 left-0 right-0 z-40 bg-white py-4 px-4 sm:py-6 sm:px-6">
+        <div className="fixed top-0 left-0 right-0 z-40 py-4 px-4 sm:py-6 sm:px-6">
           <div className="max-w-7xl mx-auto flex items-center justify-center">
             <WizardHeader 
               currentScreen={currentScreen}
@@ -395,7 +395,7 @@ export default function Home() {
       )}
 
       {/* Main Content - Slide Container */}
-      <main className="flex-1 relative overflow-hidden flex items-center justify-center py-8" role="main">
+      <main className="flex-1 relative overflow-hidden flex items-center justify-center py-0 sm:py-8" role="main">
         {/* Selection Screen */}
         <div 
           className={`slide-screen flex items-center justify-center ${

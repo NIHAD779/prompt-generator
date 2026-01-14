@@ -124,7 +124,7 @@ body {
     height: auto;
     min-height: 100%;
     align-items: flex-start;
-    padding: 1rem 0.75rem;
+    padding: 0 0.75rem 0.25rem 0.75rem;
   }
 }
 
@@ -176,7 +176,6 @@ body {
   position: sticky;
   top: 0;
   z-index: 30;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
 }
 
 /* Markdown Content Styling */

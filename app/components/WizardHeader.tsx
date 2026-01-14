@@ -16,7 +16,7 @@ export default function WizardHeader({ currentScreen, hasGeneratedPrompt, hasPro
   }
 
   const steps = [
-    { id: 'selection' as Screen, label: 'Select', fullLabel: 'What do you want to build', order: 1 },
+    { id: 'selection' as Screen, label: 'Home', fullLabel: 'What do you want to build', order: 1 },
     { id: 'form' as Screen, label: 'Describe', fullLabel: 'Describe your project', order: 2 },
     { id: 'result' as Screen, label: 'Result', fullLabel: 'Generated prompt', order: 3 },
   ];
@@ -76,7 +76,7 @@ export default function WizardHeader({ currentScreen, hasGeneratedPrompt, hasPro
                 onClick={() => isClickable && onStepClick(step.id)}
                 disabled={!isClickable}
                 className={`
-                  flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full transition-all text-xs font-medium
+                  flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full   transition-all text-xs font-medium
                   ${isCurrent ? 'bg-black text-white' : ''}
                   ${isCompleted ? 'bg-gray-100 text-black' : ''}
                   ${!isClickable && !isCurrent && !isCompleted ? 'bg-gray-50 text-gray-400' : ''}
